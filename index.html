@@ -142,7 +142,7 @@
                   <div class="card">
                     <img src="img/lomba3.jpeg" class="card-img-top" alt="KEGIATAN 2">
                     <div class="card-body">
-                      <p class="card-text">FOTO DI ATAS KEMENANGAN DALAM LOMBA FOTO TINGKAT NASIONAL DAN PRAMUKA
+                      <p class="card-text">FOTO DI ATAS KEMENANGAN DALAM LOMBA FOTO TINGKAT PROVINSI JAMBI DAN PRAMUKA
                         ORANG KAYO PINGAI MENDAPAT KAN PIALA BERGILIR.
                       </p>
                     </div>
@@ -315,24 +315,33 @@
           <div class="container">
             <div class="row justify-content-center mb-5">
               <div class="col-md-6">
-                <form>
+                <div class="alert alert-success alert-dismissible fade show d-none My-alert" role="alert">
+                  <strong>Terimakasih!</strong> Anda Sudah Terdaftar Sebagai Anggota Pramuka.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <form name="Daftar-Anggota-Baru-Pramuka">
                   <div class="form-group">
                     <label for="exampleInputnama">Nama lengkap</label>
-                    <input type="text" class="form-control" id="exampleInputnama" aria-describedby="namahelp">
+                    <input type="text" class="form-control" id="exampleInputnama" aria-describedby="namahelp" name="Nama">
                     <small id="namahelp" class="form-text text-muted">silahkan isi nama lengkap anda</small>
                   </div>
                   <form>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
                       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                     </div>
                   <div class="form-group">
                     <label for="exampleInputnama">kelas dan jurusan</label>
-                    <input type="text" class="form-control" id="exampleInputnama" aria-describedby="namahelp">
+                    <input type="text" class="form-control" id="exampleInputnama" aria-describedby="namahelp" name="kelas dan jurusan">
                     <small id="namahelp" class="form-text text-muted">silahkan isi kelas dan jurusan</small>
                   </div>
-                  <button type="submit" class="btn btn-primary">Daftar</button>
+                  <button type="submit" class="btn btn-primary btn-kirim">Daftar</button>
+
+                  <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                  </button>
                 </form>
               </div>
             </div>
@@ -354,5 +363,30 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwlFvt2NK5RKFz85GaVDkhbf7YAdo8EB1-ghBgMH9pZKIF1OVhl_rIwX58QB7tp_XszQA/exec'
+      const form = document.forms['Daftar-Anggota-Baru-Pramuka']
+      const btnKirim =document.querySelector('.btn-kirim');
+      const btnLoading =document.querySelector('.btn-loading');
+      const myAlert =document.querySelector('.My-alert'); 
+    
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        //ketika tombol submit diklik
+        //tampilkan tombol loading,hilangkan tombol kirim
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response => {
+            btnLoading.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
+            //tampilkan alert
+            myAlert.classList.toggle('d-none');
+            //reset formnya
+            form.reset();
+            console.log('Success!', response)})
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
